@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewData["Title"] = "HomePage";
+}
+<button onclick="getAllResultTo()" id="#btn" type="button">Get all Records</button><br /><br />
+<button onclick="getResultTo()" id="#btn1" type="button">Get single Record</button><br /><br />
+
+
+
+<form action="" id="details">
+
+    <input id="name" placeholder="Employee Name" />
+    <input id="age" placeholder="Age" />
+    <input id="designation" placeholder="Designation" />
+    <input id="worked" placeholder="Worked Years" />
+    <button onclick="postResultTo()" id="#btn2" type="button">Update single record</button>
+</form>
+
+
+<br /><br />
+<p id="msg"></p>
+
+<div id="container"></div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script type="text/javascript">
+    function getAllResultTo() {
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetEmployeeDetails",
+            success: function (msg) {
+                var data = JSON.stringify(msg);
+                document.getElementById('container').innerHTML = data;
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        });
+    }
+    function getResultTo() {
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetEmployeeDetailsByIdAsync",
+            data: { "id": 4 },
+            dataType: "json",
+            success: function (msg) {
+                var data = JSON.stringify(msg);
+                document.getElementById('container').innerHTML = data;
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        });
+    }
+    function postResultTo() {
+        var data = {
+            EmployeeName: $("#name").val(),
+            Age: $("#age").val(),
+            Designation: $("#designation").val(),
+            WorkedYears: $("#worked").val()
+        }
+        console.log(data);
+        var msg = JSON.stringify(data);
+        document.getElementById('container').innerHTML = msg;
+        document.getElementById('container');
+        $.ajax({
+            type: "POST",
+            url: "/Home/PostEmployee",
+            contentType: "application/json; charset=utf-16",
+            data: JSON.stringify(data),
+            success: function (msg) {
+                console.log(msg);
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        });
+    }
+
+</script>
+
